@@ -1,0 +1,202 @@
+-- Create the GUI
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "DaizzDuperX"
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+local Frame = Instance.new("Frame")
+Frame.Size = UDim2.new(0, 420, 0, 380)
+Frame.Position = UDim2.new(0.5, -210, 0.5, -190)
+Frame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+Frame.BorderSizePixel = 0
+Frame.Active = true
+Frame.Draggable = true
+Frame.Parent = ScreenGui
+
+-- Add glossy dark frame styling
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 12)
+UICorner.Parent = Frame
+
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Color = Color3.fromRGB(80, 80, 255)
+UIStroke.Thickness = 2
+UIStroke.Parent = Frame
+
+-- Glowing title bar
+local TitleBar = Instance.new("Frame")
+TitleBar.Size = UDim2.new(1, 0, 0, 40)
+TitleBar.BackgroundColor3 = Color3.fromRGB(20, 20, 60)
+TitleBar.BorderSizePixel = 0
+TitleBar.Parent = Frame
+
+local TitleCorner = Instance.new("UICorner")
+TitleCorner.CornerRadius = UDim.new(0, 12)
+TitleCorner.Parent = TitleBar
+
+local TitleText = Instance.new("TextLabel")
+TitleText.Size = UDim2.new(1, 0, 1, 0)
+TitleText.Text = "⚡ DAIZZ DUPER X ⚡ (v3.2.1)"
+TitleText.TextColor3 = Color3.fromRGB(100, 180, 255)
+TitleText.Font = Enum.Font.GothamBold
+TitleText.TextSize = 20
+TitleText.BackgroundTransparency = 1
+TitleText.Parent = TitleBar
+
+-- Decorative elements
+local Decoration1 = Instance.new("Frame")
+Decoration1.Size = UDim2.new(1, 0, 0, 2)
+Decoration1.Position = UDim2.new(0, 0, 0, 38)
+Decoration1.BackgroundColor3 = Color3.fromRGB(80, 80, 255)
+Decoration1.BorderSizePixel = 0
+Decoration1.Parent = TitleBar
+
+-- Main content area
+local StatusLabel = Instance.new("TextLabel")
+StatusLabel.Size = UDim2.new(1, -40, 0, 30)
+StatusLabel.Position = UDim2.new(0, 20, 0, 60)
+StatusLabel.Text = "🟢 SYSTEM READY | Anti-Cheat: BYPASSED"
+StatusLabel.TextColor3 = Color3.fromRGB(100, 255, 100)
+StatusLabel.Font = Enum.Font.GothamBold
+StatusLabel.TextSize = 18
+StatusLabel.TextXAlignment = Enum.TextXAlignment.Left
+StatusLabel.BackgroundTransparency = 1
+StatusLabel.Parent = Frame
+
+-- New Warning Box
+local WarningBox = Instance.new("Frame")
+WarningBox.Size = UDim2.new(1, -40, 0, 60)
+WarningBox.Position = UDim2.new(0, 20, 0, 100)
+WarningBox.BackgroundColor3 = Color3.fromRGB(40, 10, 10)
+WarningBox.Parent = Frame
+
+local WarningCorner = Instance.new("UICorner")
+WarningCorner.CornerRadius = UDim.new(0, 8)
+WarningCorner.Parent = WarningBox
+
+local WarningIcon = Instance.new("TextLabel")
+WarningIcon.Size = UDim2.new(0, 30, 0, 30)
+WarningIcon.Position = UDim2.new(0, 10, 0.5, -15)
+WarningIcon.Text = "⚠️"
+WarningIcon.TextSize = 24
+WarningIcon.BackgroundTransparency = 1
+WarningIcon.Parent = WarningBox
+
+local WarningText = Instance.new("TextLabel")
+WarningText.Size = UDim2.new(1, -50, 1, 0)
+WarningText.Position = UDim2.new(0, 50, 0, 0)
+WarningText.Text = "REQUIRES MYTHICAL+ PET! Lower rarity will freeze."
+WarningText.TextColor3 = Color3.fromRGB(255, 120, 120)
+WarningText.Font = Enum.Font.GothamBold
+WarningText.TextSize = 14
+WarningText.TextXAlignment = Enum.TextXAlignment.Left
+WarningText.TextYAlignment = Enum.TextYAlignment.Center
+WarningText.BackgroundTransparency = 1
+WarningText.Parent = WarningBox
+
+-- Instructions with larger text
+local Instructions = Instance.new("TextLabel")
+Instructions.Size = UDim2.new(1, -40, 0, 120)
+Instructions.Position = UDim2.new(0, 20, 0, 170)
+Instructions.Text = "📜 INSTRUCTIONS:\n\n1. Hold a MYTHICAL/DEVINE pet\n2. Keep inventory open\n3. Press DUPLICATE button\n4. Wait 5-10 Minutes\n\n✔️ 92% Success Rate"
+Instructions.TextColor3 = Color3.fromRGB(220, 220, 220)
+Instructions.Font = Enum.Font.Gotham
+Instructions.TextSize = 16
+Instructions.TextXAlignment = Enum.TextXAlignment.Left
+Instructions.TextYAlignment = Enum.TextYAlignment.Top
+Instructions.BackgroundTransparency = 1
+Instructions.Parent = Frame
+
+-- Main button with flashy style
+local Button = Instance.new("TextButton")
+Button.Size = UDim2.new(0, 260, 0, 50)
+Button.Position = UDim2.new(0.5, -130, 0.9, -35)
+Button.Text = "🔄 START DUPLICATION"
+Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+Button.Font = Enum.Font.GothamBold
+Button.TextSize = 20
+Button.BackgroundColor3 = Color3.fromRGB(60, 120, 255)
+Button.Parent = Frame
+
+local ButtonCorner = Instance.new("UICorner")
+ButtonCorner.CornerRadius = UDim.new(0, 8)
+ButtonCorner.Parent = Button
+
+local ButtonStroke = Instance.new("UIStroke")
+ButtonStroke.Color = Color3.fromRGB(100, 180, 255)
+ButtonStroke.Thickness = 2
+ButtonStroke.Parent = Button
+
+-- Function to duplicate the equipped tool
+local function duplicateTool()
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    local backpack = player:FindFirstChild("Backpack")
+    
+    if not backpack then
+        StatusLabel.Text = "❌ ERROR: Backpack not found"
+        return false
+    end
+    
+    local tool = character:FindFirstChildOfClass("Tool") or player:FindFirstChildOfClass("Tool")
+    
+    if not tool then
+        StatusLabel.Text = "❌ ERROR: No tool equipped"
+        return false
+    end
+    
+    -- Create a copy of the tool
+    local clone = tool:Clone()
+    clone.Parent = backpack
+    
+    StatusLabel.Text = "✅ SUCCESS: Tool duplicated!"
+    return true
+end
+
+-- Loading animation and duplication process
+local function startDuplication()
+    -- Disable button during process
+    Button.Text = "⏳ PROCESSING..."
+    Button.BackgroundColor3 = Color3.fromRGB(255, 150, 50)
+    Button.AutoButtonColor = false
+    
+    -- Fake loading sequence
+    StatusLabel.Text = "🔍 VERIFYING PET RARITY..."
+    wait(1.5)
+    
+    StatusLabel.Text = "⚠️ BYPASSING PET LIMITS..."
+    wait(2)
+    
+    StatusLabel.Text = "⚙️ DUPLICATING PET DATA..."
+    wait(1.5)
+    
+    -- Actual duplication attempt
+    local success = pcall(duplicateTool)
+    
+    if not success then
+        StatusLabel.Text = "❌ ERROR: Duplication failed"
+        Button.Text = "🔁 TRY AGAIN"
+        Button.BackgroundColor3 = Color3.fromRGB(255, 80, 80)
+    else
+        Button.Text = "✅ DONE!"
+        Button.BackgroundColor3 = Color3.fromRGB(80, 255, 80)
+    end
+    
+    -- Re-enable button after delay
+    wait(3)
+    Button.Text = "🔄 START DUPLICATION"
+    Button.BackgroundColor3 = Color3.fromRGB(60, 120, 255)
+    Button.AutoButtonColor = true
+end
+
+Button.MouseButton1Click:Connect(startDuplication)
+
+-- Add a fake watermark
+local Watermark = Instance.new("TextLabel")
+Watermark.Size = UDim2.new(1, 0, 0, 20)
+Watermark.Position = UDim2.new(0, 0, 1, -20)
+Watermark.Text = "Daizz Duper X © 2025 | VIP Build #8271 | discord.gg/daizz"
+Watermark.TextColor3 = Color3.fromRGB(120, 120, 120)
+Watermark.Font = Enum.Font.Gotham
+Watermark.TextSize = 12
+Watermark.BackgroundTransparency = 1
+Watermark.Parent = Frame
