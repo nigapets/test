@@ -16,14 +16,38 @@ ScreenGui.Name = "ScriptHub"
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 ScreenGui.Parent = gui
 
+-- Main Frame with gradient and shadow
 local MainFrame = Instance.new("Frame")
 MainFrame.Name = "MainFrame"
 MainFrame.Size = UDim2.new(0, 500, 0, 600)
-MainFrame.AnchorPoint = Vector2.new(0.5, 0.5) -- Important for centering
+MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
 MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
 MainFrame.BorderSizePixel = 0
 MainFrame.ClipsDescendants = true
 MainFrame.Parent = ScreenGui
+
+-- Add gradient effect
+local Gradient = Instance.new("UIGradient")
+Gradient.Color = ColorSequence.new({
+	ColorSequenceKeypoint.new(0, Color3.fromRGB(30, 30, 40)),
+	ColorSequenceKeypoint.new(1, Color3.fromRGB(20, 20, 30))
+})
+Gradient.Rotation = 45
+Gradient.Parent = MainFrame
+
+-- Add shadow effect
+local Shadow = Instance.new("ImageLabel")
+Shadow.Name = "Shadow"
+Shadow.Size = UDim2.new(1, 10, 1, 10)
+Shadow.Position = UDim2.new(0, -5, 0, -5)
+Shadow.BackgroundTransparency = 1
+Shadow.Image = "rbxassetid://1316045217"
+Shadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+Shadow.ImageTransparency = 0.8
+Shadow.ScaleType = Enum.ScaleType.Slice
+Shadow.SliceCenter = Rect.new(10, 10, 118, 118)
+Shadow.ZIndex = -1
+Shadow.Parent = MainFrame
 
 CenterFrame(MainFrame)
 
@@ -32,7 +56,7 @@ local UICorner = Instance.new("UICorner")
 UICorner.CornerRadius = UDim.new(0, 8)
 UICorner.Parent = MainFrame
 
--- Title Bar with drag functionality
+-- Title Bar with gradient and icon
 local TitleBar = Instance.new("Frame")
 TitleBar.Name = "TitleBar"
 TitleBar.Size = UDim2.new(1, 0, 0, 50)
@@ -41,10 +65,27 @@ TitleBar.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
 TitleBar.BorderSizePixel = 0
 TitleBar.Parent = MainFrame
 
+-- Title bar gradient
+local TitleGradient = Instance.new("UIGradient")
+TitleGradient.Color = ColorSequence.new({
+	ColorSequenceKeypoint.new(0, Color3.fromRGB(45, 45, 60)),
+	ColorSequenceKeypoint.new(1, Color3.fromRGB(25, 25, 35))
+})
+TitleGradient.Parent = TitleBar
+
+-- Add icon before title
+local Icon = Instance.new("ImageLabel")
+Icon.Name = "Icon"
+Icon.Size = UDim2.new(0, 30, 0, 30)
+Icon.Position = UDim2.new(0, 10, 0.5, -15)
+Icon.BackgroundTransparency = 1
+Icon.Image = "rbxassetid://7072717162" -- Replace with your preferred icon ID
+Icon.Parent = TitleBar
+
 local Title = Instance.new("TextLabel")
 Title.Name = "Title"
 Title.Size = UDim2.new(1, -60, 1, 0)
-Title.Position = UDim2.new(0, 10, 0, 0)
+Title.Position = UDim2.new(0, 50, 0, 0)
 Title.BackgroundTransparency = 1
 Title.Text = "DAIZZ'S OFFICIAL SCRIPT HUB"
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -53,11 +94,57 @@ Title.TextSize = 20
 Title.TextXAlignment = Enum.TextXAlignment.Left
 Title.Parent = TitleBar
 
--- Credits label (moved further down)
+-- Add decorative particles to title bar
+local ParticleContainer = Instance.new("Frame")
+ParticleContainer.Name = "ParticleContainer"
+ParticleContainer.Size = UDim2.new(1, 0, 1, 0)
+ParticleContainer.BackgroundTransparency = 1
+ParticleContainer.Parent = TitleBar
+
+-- Create particles
+for i = 1, 8 do
+	local particle = Instance.new("Frame")
+	particle.Name = "Particle"..i
+	particle.Size = UDim2.new(0, 2, 0, 2)
+	particle.BackgroundColor3 = Color3.fromRGB(100, 150, 255)
+	particle.BorderSizePixel = 0
+	particle.Position = UDim2.new(0, math.random(0, 500), 0, math.random(0, 50))
+	particle.Parent = ParticleContainer
+
+	local particleCorner = Instance.new("UICorner")
+	particleCorner.CornerRadius = UDim.new(1, 0)
+	particleCorner.Parent = particle
+
+	-- Animate particles
+	spawn(function()
+		while particle.Parent do
+			local targetX = math.random(0, 500)
+			local targetY = math.random(0, 50)
+			local duration = math.random(3, 7)
+
+			TweenService:Create(particle, TweenInfo.new(duration), {
+				Position = UDim2.new(0, targetX, 0, targetY),
+				BackgroundTransparency = math.random(0, 50)/100
+			}):Play()
+
+			wait(duration)
+		end
+	end)
+end
+
+-- Credits label with decorative line
+local CreditsLine = Instance.new("Frame")
+CreditsLine.Name = "CreditsLine"
+CreditsLine.Size = UDim2.new(0.99, -20, 0, 1)
+CreditsLine.Position = UDim2.new(0, 10, 1, -30)
+CreditsLine.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
+CreditsLine.BorderSizePixel = 0
+CreditsLine.Parent = MainFrame
+
 local Credits = Instance.new("TextLabel")
 Credits.Name = "Credits"
-Credits.Size = UDim2.new(1, -10, 0, 20)
-Credits.Position = UDim2.new(0, 10, 1, -30) -- Adjusted position
+Credits.Size = UDim2.new(1, -10, 0.017, 20)
+Credits.Position = UDim2.new(0, 10, 1, -30)
 Credits.BackgroundTransparency = 1
 Credits.Text = "Created by Daizz - Special thanks to script developers"
 Credits.TextColor3 = Color3.fromRGB(150, 150, 150)
@@ -66,17 +153,22 @@ Credits.TextSize = 12
 Credits.TextXAlignment = Enum.TextXAlignment.Left
 Credits.Parent = MainFrame
 
-local CloseButton = Instance.new("TextButton")
+-- Close button with icon
+local CloseButton = Instance.new("ImageButton")
 CloseButton.Name = "CloseButton"
 CloseButton.Size = UDim2.new(0, 30, 0, 30)
 CloseButton.Position = UDim2.new(1, -35, 0, 10)
 CloseButton.BackgroundColor3 = Color3.fromRGB(200, 60, 60)
 CloseButton.BorderSizePixel = 0
-CloseButton.Text = "X"
-CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-CloseButton.Font = Enum.Font.GothamBold
-CloseButton.TextSize = 16
+CloseButton.Image = "rbxassetid://3926305904" -- Close icon
+CloseButton.ImageRectOffset = Vector2.new(284, 4)
+CloseButton.ImageRectSize = Vector2.new(24, 24)
 CloseButton.Parent = TitleBar
+
+-- Add corner rounding to close button
+local CloseButtonCorner = Instance.new("UICorner")
+CloseButtonCorner.CornerRadius = UDim.new(0, 6)
+CloseButtonCorner.Parent = CloseButton
 
 -- Make frame draggable
 local dragging
