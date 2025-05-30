@@ -6,6 +6,10 @@ local UserInputService = game:GetService("UserInputService")
 local player = Players.LocalPlayer
 local gui = player:WaitForChild("PlayerGui")
 
+local function CenterFrame(frame)
+    frame.Position = UDim2.new(0.5, -frame.Size.X.Offset/2, 0.5, -frame.Size.Y.Offset/2)
+end
+
 -- Main ScreenGUI
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "ScriptHub"
@@ -14,13 +18,14 @@ ScreenGui.Parent = gui
 
 local MainFrame = Instance.new("Frame")
 MainFrame.Name = "MainFrame"
-MainFrame.Size = UDim2.new(0, 500, 0, 550)
-MainFrame.Position = UDim2.new(0.5, -250, 0.5, -275)
-MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+MainFrame.Size = UDim2.new(0, 500, 0, 600)
+MainFrame.AnchorPoint = Vector2.new(0.5, 0.5) -- Important for centering
 MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
 MainFrame.BorderSizePixel = 0
 MainFrame.ClipsDescendants = true
 MainFrame.Parent = ScreenGui
+
+CenterFrame(MainFrame)
 
 -- Add corner rounding
 local UICorner = Instance.new("UICorner")
@@ -48,11 +53,11 @@ Title.TextSize = 20
 Title.TextXAlignment = Enum.TextXAlignment.Left
 Title.Parent = TitleBar
 
--- Credits label
+-- Credits label (moved further down)
 local Credits = Instance.new("TextLabel")
 Credits.Name = "Credits"
 Credits.Size = UDim2.new(1, -10, 0, 20)
-Credits.Position = UDim2.new(0, 10, 1, -25)
+Credits.Position = UDim2.new(0, 10, 1, -30) -- Adjusted position
 Credits.BackgroundTransparency = 1
 Credits.Text = "Created by Daizz - Special thanks to script developers"
 Credits.TextColor3 = Color3.fromRGB(150, 150, 150)
@@ -127,14 +132,23 @@ CloseButton.MouseButton1Click:Connect(function()
 end)
 
 -- Script Categories
-local Categories = {"Admin", "Games", "Utility", "ESP", "All"}
+local Categories = {"Admin", "Games", "Utility", "ESP", "Combat", "All"}
 
-local CategoryButtons = Instance.new("Frame")
+-- Scrollable category buttons
+local CategoryButtonsContainer = Instance.new("Frame")
+CategoryButtonsContainer.Name = "CategoryButtonsContainer"
+CategoryButtonsContainer.Size = UDim2.new(1, -20, 0, 50) -- Increased height
+CategoryButtonsContainer.Position = UDim2.new(0, 10, 0, 60)
+CategoryButtonsContainer.BackgroundTransparency = 1
+CategoryButtonsContainer.Parent = MainFrame
+
+local CategoryButtons = Instance.new("ScrollingFrame")
 CategoryButtons.Name = "CategoryButtons"
-CategoryButtons.Size = UDim2.new(1, -20, 0, 40)
-CategoryButtons.Position = UDim2.new(0, 10, 0, 60)
+CategoryButtons.Size = UDim2.new(1, 0, 1, 0)
 CategoryButtons.BackgroundTransparency = 1
-CategoryButtons.Parent = MainFrame
+CategoryButtons.ScrollBarThickness = 5
+CategoryButtons.CanvasSize = UDim2.new(0, 0, 0, 0)
+CategoryButtons.Parent = CategoryButtonsContainer
 
 local UIListLayout = Instance.new("UIListLayout")
 UIListLayout.FillDirection = Enum.FillDirection.Horizontal
@@ -144,7 +158,7 @@ UIListLayout.Parent = CategoryButtons
 for i, category in ipairs(Categories) do
 	local button = Instance.new("TextButton")
 	button.Name = category
-	button.Size = UDim2.new(0, 70, 1, 0)
+	button.Size = UDim2.new(0, 80, 0, 40) -- Slightly larger buttons
 	button.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
 	button.BorderSizePixel = 0
 	button.Text = category
@@ -152,6 +166,11 @@ for i, category in ipairs(Categories) do
 	button.Font = Enum.Font.Gotham
 	button.TextSize = 14
 	button.Parent = CategoryButtons
+
+	-- Add corner rounding to buttons
+	local buttonCorner = Instance.new("UICorner")
+	buttonCorner.CornerRadius = UDim.new(0, 6)
+	buttonCorner.Parent = button
 
 	-- Button animations
 	button.MouseEnter:Connect(function()
@@ -163,16 +182,19 @@ for i, category in ipairs(Categories) do
 	end)
 
 	button.MouseButton1Click:Connect(function()
-		TweenService:Create(button, TweenInfo.new(0.1), {Size = UDim2.new(0, 65, 1, 0)}):Play()
-		TweenService:Create(button, TweenInfo.new(0.1), {Size = UDim2.new(0, 70, 1, 0)}):Play()
+		TweenService:Create(button, TweenInfo.new(0.1), {Size = UDim2.new(0, 75, 0, 38)}):Play()
+		TweenService:Create(button, TweenInfo.new(0.1), {Size = UDim2.new(0, 80, 0, 40)}):Play()
 	end)
 end
 
--- Scripts Frame
+-- Update category buttons canvas size
+CategoryButtons.CanvasSize = UDim2.new(0, (#Categories * 85) + ((#Categories - 1) * 5), 0, 0)
+
+-- Scripts Frame (adjusted position and size)
 local ScriptsFrame = Instance.new("ScrollingFrame")
 ScriptsFrame.Name = "ScriptsFrame"
-ScriptsFrame.Size = UDim2.new(1, -20, 1, -120)
-ScriptsFrame.Position = UDim2.new(0, 10, 0, 110)
+ScriptsFrame.Size = UDim2.new(1, -20, 1, -150) -- Adjusted for new height
+ScriptsFrame.Position = UDim2.new(0, 10, 0, 120) -- Adjusted position
 ScriptsFrame.BackgroundTransparency = 1
 ScriptsFrame.ScrollBarThickness = 5
 ScriptsFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
@@ -327,6 +349,11 @@ local function DisplayScripts(category)
 			executeButton.TextSize = 14
 			executeButton.Parent = scriptFrame
 
+			-- Add corner rounding to execute button
+			local buttonCorner = Instance.new("UICorner")
+			buttonCorner.CornerRadius = UDim.new(0, 6)
+			buttonCorner.Parent = executeButton
+
 			-- Button animations
 			executeButton.MouseEnter:Connect(function()
 				TweenService:Create(executeButton, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(100, 140, 100)}):Play()
@@ -380,9 +407,9 @@ for _, button in ipairs(CategoryButtons:GetChildren()) do
 	end
 end
 
--- Initial animation
 MainFrame.Size = UDim2.new(0, 0, 0, 0)
-TweenService:Create(MainFrame, TweenInfo.new(0.5, Enum.EasingStyle.Back), {Size = UDim2.new(0, 500, 0, 550)}):Play()
+CenterFrame(MainFrame) -- Ensure it starts centered even at size 0
+TweenService:Create(MainFrame, TweenInfo.new(0.5, Enum.EasingStyle.Back), {Size = UDim2.new(0, 500, 0, 600)}):Play()
 
 -- Show all scripts by default
 task.wait(0.5) -- Wait for open animation
