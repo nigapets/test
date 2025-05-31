@@ -1,56 +1,25 @@
--- Script Hub UI with Responsive Design for Mobile and Desktop
+-- Script Hub UI with Execution, Draggable, and Animations
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
-local GuiService = game:GetService("GuiService")
-local RunService = game:GetService("RunService")
 
 local player = Players.LocalPlayer
 local gui = player:WaitForChild("PlayerGui")
 
--- Detect device type
-local IS_MOBILE = UserInputService.TouchEnabled
-local IS_DESKTOP = UserInputService.MouseEnabled
-local IS_CONSOLE = GuiService:IsTenFootInterface()
-
--- Get screen dimensions
-local VIEWPORT_SIZE = workspace.CurrentCamera.ViewportSize
-local SCREEN_WIDTH = VIEWPORT_SIZE.X
-local SCREEN_HEIGHT = VIEWPORT_SIZE.Y
-
--- Responsive scaling factors
-local BASE_WIDTH = 500 -- Base width for desktop
-local BASE_HEIGHT = 600 -- Base height for desktop
-local MOBILE_WIDTH_RATIO = 0.9 -- Mobile width as % of screen
-local MOBILE_HEIGHT_RATIO = 0.8 -- Mobile height as % of screen
-
--- Calculate responsive dimensions
-local function GetResponsiveDimensions()
-    if IS_MOBILE then
-        local width = SCREEN_WIDTH * MOBILE_WIDTH_RATIO
-        local height = SCREEN_HEIGHT * MOBILE_HEIGHT_RATIO
-        return UDim2.new(0, width, 0, height)
-    else
-        return UDim2.new(0, math.min(BASE_WIDTH, SCREEN_WIDTH * 0.9), 
-                         0, math.min(BASE_HEIGHT, SCREEN_HEIGHT * 0.9))
-    end
-end
-
 local function CenterFrame(frame)
-    frame.Position = UDim2.new(0.5, -frame.AbsoluteSize.X/2, 0.5, -frame.AbsoluteSize.Y/2)
+    frame.Position = UDim2.new(0.5, -frame.Size.X.Offset/2, 0.5, -frame.Size.Y.Offset/2)
 end
 
 -- Main ScreenGUI
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "ScriptHub"
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-ScreenGui.ResetOnSpawn = false
 ScreenGui.Parent = gui
 
 -- Main Frame with gradient and shadow
 local MainFrame = Instance.new("Frame")
 MainFrame.Name = "MainFrame"
-MainFrame.Size = GetResponsiveDimensions()
+MainFrame.Size = UDim2.new(0, 500, 0, 600)
 MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
 MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
 MainFrame.BorderSizePixel = 0
@@ -60,8 +29,8 @@ MainFrame.Parent = ScreenGui
 -- Add gradient effect
 local Gradient = Instance.new("UIGradient")
 Gradient.Color = ColorSequence.new({
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(30, 30, 40)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(20, 20, 30))
+	ColorSequenceKeypoint.new(0, Color3.fromRGB(30, 30, 40)),
+	ColorSequenceKeypoint.new(1, Color3.fromRGB(20, 20, 30))
 })
 Gradient.Rotation = 45
 Gradient.Parent = MainFrame
@@ -90,7 +59,7 @@ UICorner.Parent = MainFrame
 -- Title Bar with gradient and icon
 local TitleBar = Instance.new("Frame")
 TitleBar.Name = "TitleBar"
-TitleBar.Size = UDim2.new(1, 0, 0, IS_MOBILE and 60 or 50) -- Larger on mobile
+TitleBar.Size = UDim2.new(1, 0, 0, 50)
 TitleBar.Position = UDim2.new(0, 0, 0, 0)
 TitleBar.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
 TitleBar.BorderSizePixel = 0
@@ -99,37 +68,96 @@ TitleBar.Parent = MainFrame
 -- Title bar gradient
 local TitleGradient = Instance.new("UIGradient")
 TitleGradient.Color = ColorSequence.new({
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(45, 45, 60)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(25, 25, 35))
+	ColorSequenceKeypoint.new(0, Color3.fromRGB(45, 45, 60)),
+	ColorSequenceKeypoint.new(1, Color3.fromRGB(25, 25, 35))
 })
 TitleGradient.Parent = TitleBar
 
 -- Add icon before title
 local Icon = Instance.new("ImageLabel")
 Icon.Name = "Icon"
-Icon.Size = UDim2.new(0, IS_MOBILE and 40 or 30, 0, IS_MOBILE and 40 or 30)
-Icon.Position = UDim2.new(0, 10, 0.5, IS_MOBILE and -20 or -15)
+Icon.Size = UDim2.new(0, 30, 0, 30)
+Icon.Position = UDim2.new(0, 10, 0.5, -15)
 Icon.BackgroundTransparency = 1
-Icon.Image = "rbxassetid://7072717162"
+Icon.Image = "rbxassetid://7072717162" -- Replace with your preferred icon ID
 Icon.Parent = TitleBar
 
 local Title = Instance.new("TextLabel")
 Title.Name = "Title"
 Title.Size = UDim2.new(1, -60, 1, 0)
-Title.Position = UDim2.new(0, IS_MOBILE and 60 or 50, 0, 0)
+Title.Position = UDim2.new(0, 50, 0, 0)
 Title.BackgroundTransparency = 1
 Title.Text = "DAIZZ'S OFFICIAL SCRIPT HUB"
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title.Font = Enum.Font.GothamBold
-Title.TextSize = IS_MOBILE and 18 or 20 -- Slightly smaller on mobile
+Title.TextSize = 20
 Title.TextXAlignment = Enum.TextXAlignment.Left
 Title.Parent = TitleBar
+
+-- Add decorative particles to title bar
+local ParticleContainer = Instance.new("Frame")
+ParticleContainer.Name = "ParticleContainer"
+ParticleContainer.Size = UDim2.new(1, 0, 1, 0)
+ParticleContainer.BackgroundTransparency = 1
+ParticleContainer.Parent = TitleBar
+
+-- Create particles
+for i = 1, 8 do
+	local particle = Instance.new("Frame")
+	particle.Name = "Particle"..i
+	particle.Size = UDim2.new(0, 2, 0, 2)
+	particle.BackgroundColor3 = Color3.fromRGB(100, 150, 255)
+	particle.BorderSizePixel = 0
+	particle.Position = UDim2.new(0, math.random(0, 500), 0, math.random(0, 50))
+	particle.Parent = ParticleContainer
+
+	local particleCorner = Instance.new("UICorner")
+	particleCorner.CornerRadius = UDim.new(1, 0)
+	particleCorner.Parent = particle
+
+	-- Animate particles
+	spawn(function()
+		while particle.Parent do
+			local targetX = math.random(0, 500)
+			local targetY = math.random(0, 50)
+			local duration = math.random(3, 7)
+
+			TweenService:Create(particle, TweenInfo.new(duration), {
+				Position = UDim2.new(0, targetX, 0, targetY),
+				BackgroundTransparency = math.random(0, 50)/100
+			}):Play()
+
+			wait(duration)
+		end
+	end)
+end
+
+-- Credits label with decorative line
+local CreditsLine = Instance.new("Frame")
+CreditsLine.Name = "CreditsLine"
+CreditsLine.Size = UDim2.new(0.99, -20, 0, 1)
+CreditsLine.Position = UDim2.new(0, 10, 1, -30)
+CreditsLine.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
+CreditsLine.BorderSizePixel = 0
+CreditsLine.Parent = MainFrame
+
+local Credits = Instance.new("TextLabel")
+Credits.Name = "Credits"
+Credits.Size = UDim2.new(1, -10, 0.017, 20)
+Credits.Position = UDim2.new(0, 10, 1, -30)
+Credits.BackgroundTransparency = 1
+Credits.Text = "Created by Daizz - Special thanks to script developers"
+Credits.TextColor3 = Color3.fromRGB(150, 150, 150)
+Credits.Font = Enum.Font.Gotham
+Credits.TextSize = 12
+Credits.TextXAlignment = Enum.TextXAlignment.Left
+Credits.Parent = MainFrame
 
 -- Close button with icon
 local CloseButton = Instance.new("ImageButton")
 CloseButton.Name = "CloseButton"
-CloseButton.Size = UDim2.new(0, IS_MOBILE and 40 or 30, 0, IS_MOBILE and 40 or 30)
-CloseButton.Position = UDim2.new(1, IS_MOBILE and -45 or -35, 0, IS_MOBILE and 10 or 10)
+CloseButton.Size = UDim2.new(0, 30, 0, 30)
+CloseButton.Position = UDim2.new(1, -35, 0, 10)
 CloseButton.BackgroundColor3 = Color3.fromRGB(200, 60, 60)
 CloseButton.BorderSizePixel = 0
 CloseButton.Image = "rbxassetid://3926305904" -- Close icon
@@ -142,59 +170,57 @@ local CloseButtonCorner = Instance.new("UICorner")
 CloseButtonCorner.CornerRadius = UDim.new(0, 6)
 CloseButtonCorner.Parent = CloseButton
 
--- Make frame draggable (only on desktop)
-if IS_DESKTOP then
-    local dragging
-    local dragInput
-    local dragStart
-    local startPos
+-- Make frame draggable
+local dragging
+local dragInput
+local dragStart
+local startPos
 
-    local function update(input)
-        local delta = input.Position - dragStart
-        MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-    end
-
-    TitleBar.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            dragging = true
-            dragStart = input.Position
-            startPos = MainFrame.Position
-
-            input.Changed:Connect(function()
-                if input.UserInputState == Enum.UserInputState.End then
-                    dragging = false
-                end
-            end)
-        end
-    end)
-
-    TitleBar.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement then
-            dragInput = input
-        end
-    end)
-
-    UserInputService.InputChanged:Connect(function(input)
-        if input == dragInput and dragging then
-            update(input)
-        end
-    end)
+local function update(input)
+	local delta = input.Position - dragStart
+	MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
 end
+
+TitleBar.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+		dragging = true
+		dragStart = input.Position
+		startPos = MainFrame.Position
+
+		input.Changed:Connect(function()
+			if input.UserInputState == Enum.UserInputState.End then
+				dragging = false
+			end
+		end)
+	end
+end)
+
+TitleBar.InputChanged:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+		dragInput = input
+	end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+	if input == dragInput and dragging then
+		update(input)
+	end
+end)
 
 -- Close button animation
 CloseButton.MouseEnter:Connect(function()
-    TweenService:Create(CloseButton, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(220, 80, 80)}):Play()
+	TweenService:Create(CloseButton, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(220, 80, 80)}):Play()
 end)
 
 CloseButton.MouseLeave:Connect(function()
-    TweenService:Create(CloseButton, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(200, 60, 60)}):Play()
+	TweenService:Create(CloseButton, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(200, 60, 60)}):Play()
 end)
 
 CloseButton.MouseButton1Click:Connect(function()
-    local tween = TweenService:Create(MainFrame, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In), {Size = UDim2.new(0, 0, 0, 0)})
-    tween:Play()
-    tween.Completed:Wait()
-    ScreenGui:Destroy()
+	local tween = TweenService:Create(MainFrame, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In), {Size = UDim2.new(0, 0, 0, 0)})
+	tween:Play()
+	tween.Completed:Wait()
+	ScreenGui:Destroy()
 end)
 
 -- Script Categories
@@ -203,8 +229,8 @@ local Categories = {"Admin", "Games", "Utility", "ESP", "Combat", "All"}
 -- Scrollable category buttons
 local CategoryButtonsContainer = Instance.new("Frame")
 CategoryButtonsContainer.Name = "CategoryButtonsContainer"
-CategoryButtonsContainer.Size = UDim2.new(1, -20, 0, IS_MOBILE and 60 or 50) -- Larger on mobile
-CategoryButtonsContainer.Position = UDim2.new(0, 10, 0, IS_MOBILE and 70 or 60)
+CategoryButtonsContainer.Size = UDim2.new(1, -20, 0, 50) -- Increased height
+CategoryButtonsContainer.Position = UDim2.new(0, 10, 0, 60)
 CategoryButtonsContainer.BackgroundTransparency = 1
 CategoryButtonsContainer.Parent = MainFrame
 
@@ -212,7 +238,7 @@ local CategoryButtons = Instance.new("ScrollingFrame")
 CategoryButtons.Name = "CategoryButtons"
 CategoryButtons.Size = UDim2.new(1, 0, 1, 0)
 CategoryButtons.BackgroundTransparency = 1
-CategoryButtons.ScrollBarThickness = IS_MOBILE and 8 or 5 -- Thicker scrollbar on mobile
+CategoryButtons.ScrollBarThickness = 5
 CategoryButtons.CanvasSize = UDim2.new(0, 0, 0, 0)
 CategoryButtons.Parent = CategoryButtonsContainer
 
@@ -222,47 +248,47 @@ UIListLayout.Padding = UDim.new(0, 5)
 UIListLayout.Parent = CategoryButtons
 
 for i, category in ipairs(Categories) do
-    local button = Instance.new("TextButton")
-    button.Name = category
-    button.Size = UDim2.new(0, IS_MOBILE and 100 or 80, 0, IS_MOBILE and 50 or 40) -- Larger on mobile
-    button.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
-    button.BorderSizePixel = 0
-    button.Text = category
-    button.TextColor3 = Color3.fromRGB(255, 255, 255)
-    button.Font = Enum.Font.Gotham
-    button.TextSize = IS_MOBILE and 16 or 14 -- Slightly larger text on mobile
-    button.Parent = CategoryButtons
+	local button = Instance.new("TextButton")
+	button.Name = category
+	button.Size = UDim2.new(0, 80, 0, 40) -- Slightly larger buttons
+	button.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
+	button.BorderSizePixel = 0
+	button.Text = category
+	button.TextColor3 = Color3.fromRGB(255, 255, 255)
+	button.Font = Enum.Font.Gotham
+	button.TextSize = 14
+	button.Parent = CategoryButtons
 
-    -- Add corner rounding to buttons
-    local buttonCorner = Instance.new("UICorner")
-    buttonCorner.CornerRadius = UDim.new(0, 6)
-    buttonCorner.Parent = button
+	-- Add corner rounding to buttons
+	local buttonCorner = Instance.new("UICorner")
+	buttonCorner.CornerRadius = UDim.new(0, 6)
+	buttonCorner.Parent = button
 
-    -- Button animations
-    button.MouseEnter:Connect(function()
-        TweenService:Create(button, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(80, 80, 100)}):Play()
-    end)
+	-- Button animations
+	button.MouseEnter:Connect(function()
+		TweenService:Create(button, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(80, 80, 100)}):Play()
+	end)
 
-    button.MouseLeave:Connect(function()
-        TweenService:Create(button, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(60, 60, 80)}):Play()
-    end)
+	button.MouseLeave:Connect(function()
+		TweenService:Create(button, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(60, 60, 80)}):Play()
+	end)
 
-    button.MouseButton1Click:Connect(function()
-        TweenService:Create(button, TweenInfo.new(0.1), {Size = UDim2.new(0, IS_MOBILE and 95 or 75, 0, IS_MOBILE and 45 or 38)}):Play()
-        TweenService:Create(button, TweenInfo.new(0.1), {Size = UDim2.new(0, IS_MOBILE and 100 or 80, 0, IS_MOBILE and 50 or 40)}):Play()
-    end)
+	button.MouseButton1Click:Connect(function()
+		TweenService:Create(button, TweenInfo.new(0.1), {Size = UDim2.new(0, 75, 0, 38)}):Play()
+		TweenService:Create(button, TweenInfo.new(0.1), {Size = UDim2.new(0, 80, 0, 40)}):Play()
+	end)
 end
 
 -- Update category buttons canvas size
-CategoryButtons.CanvasSize = UDim2.new(0, (#Categories * (IS_MOBILE and 105 or 85)) + ((#Categories - 1) * 5), 0, 0)
+CategoryButtons.CanvasSize = UDim2.new(0, (#Categories * 85) + ((#Categories - 1) * 5), 0, 0)
 
 -- Scripts Frame (adjusted position and size)
 local ScriptsFrame = Instance.new("ScrollingFrame")
 ScriptsFrame.Name = "ScriptsFrame"
-ScriptsFrame.Size = UDim2.new(1, -20, 1, IS_MOBILE and -180 or -150)
-ScriptsFrame.Position = UDim2.new(0, 10, 0, IS_MOBILE and 140 or 120)
+ScriptsFrame.Size = UDim2.new(1, -20, 1, -150) -- Adjusted for new height
+ScriptsFrame.Position = UDim2.new(0, 10, 0, 120) -- Adjusted position
 ScriptsFrame.BackgroundTransparency = 1
-ScriptsFrame.ScrollBarThickness = IS_MOBILE and 8 or 5 -- Thicker scrollbar on mobile
+ScriptsFrame.ScrollBarThickness = 5
 ScriptsFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
 ScriptsFrame.Parent = MainFrame
 
@@ -270,8 +296,7 @@ local ScriptsListLayout = Instance.new("UIListLayout")
 ScriptsListLayout.Padding = UDim.new(0, 10)
 ScriptsListLayout.Parent = ScriptsFrame
 
--- Official Scripts Database (same as before)
-local OfficialScripts = {
+-- Official Scripts Database
 local OfficialScripts = {
 	{
 		Name = "Infinite Yield",
@@ -355,153 +380,134 @@ local OfficialScripts = {
 
 -- Function to display scripts
 local function DisplayScripts(category)
-    -- Clear previous scripts with animation
-    for _, child in ipairs(ScriptsFrame:GetChildren()) do
-        if child:IsA("Frame") then
-            local tween = TweenService:Create(child, TweenInfo.new(0.2), {BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 0)})
-            tween:Play()
-            tween.Completed:Connect(function()
-                child:Destroy()
-            end)
-        end
-    end
+	-- Clear previous scripts with animation
+	for _, child in ipairs(ScriptsFrame:GetChildren()) do
+		if child:IsA("Frame") then
+			local tween = TweenService:Create(child, TweenInfo.new(0.2), {BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 0)})
+			tween:Play()
+			tween.Completed:Connect(function()
+				child:Destroy()
+			end)
+		end
+	end
 
-    task.wait(0.2) -- Wait for fade out
+	task.wait(0.2) -- Wait for fade out
 
-    -- Add matching scripts with animation
-    local count = 0
-    for _, scriptData in ipairs(OfficialScripts) do
-        if category == "All" or scriptData.Category == category then
-            count = count + 1
+	-- Add matching scripts with animation
+	local count = 0
+	for _, scriptData in ipairs(OfficialScripts) do
+		if category == "All" or scriptData.Category == category then
+			count = count + 1
 
-            local scriptFrame = Instance.new("Frame")
-            scriptFrame.Name = "ScriptFrame"
-            scriptFrame.Size = UDim2.new(1, 0, 0, 0) -- Start at 0 height
-            scriptFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
-            scriptFrame.BorderSizePixel = 0
-            scriptFrame.Parent = ScriptsFrame
+			local scriptFrame = Instance.new("Frame")
+			scriptFrame.Name = "ScriptFrame"
+			scriptFrame.Size = UDim2.new(1, 0, 0, 0) -- Start at 0 height
+			scriptFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
+			scriptFrame.BorderSizePixel = 0
+			scriptFrame.Parent = ScriptsFrame
 
-            -- Add corner rounding to script frames
-            local frameCorner = Instance.new("UICorner")
-            frameCorner.CornerRadius = UDim.new(0, 6)
-            frameCorner.Parent = scriptFrame
+			-- Add corner rounding to script frames
+			local frameCorner = Instance.new("UICorner")
+			frameCorner.CornerRadius = UDim.new(0, 6)
+			frameCorner.Parent = scriptFrame
 
-            local nameLabel = Instance.new("TextLabel")
-            nameLabel.Name = "Name"
-            nameLabel.Size = UDim2.new(1, -10, 0, IS_MOBILE and 40 or 30)
-            nameLabel.Position = UDim2.new(0, 10, 0, 5)
-            nameLabel.BackgroundTransparency = 1
-            nameLabel.Text = scriptData.Name
-            nameLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-            nameLabel.Font = Enum.Font.GothamBold
-            nameLabel.TextSize = IS_MOBILE and 20 or 18
-            nameLabel.TextXAlignment = Enum.TextXAlignment.Left
-            nameLabel.Parent = scriptFrame
+			local nameLabel = Instance.new("TextLabel")
+			nameLabel.Name = "Name"
+			nameLabel.Size = UDim2.new(1, -10, 0, 30)
+			nameLabel.Position = UDim2.new(0, 10, 0, 5)
+			nameLabel.BackgroundTransparency = 1
+			nameLabel.Text = scriptData.Name
+			nameLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+			nameLabel.Font = Enum.Font.GothamBold
+			nameLabel.TextSize = 18
+			nameLabel.TextXAlignment = Enum.TextXAlignment.Left
+			nameLabel.Parent = scriptFrame
 
-            local descLabel = Instance.new("TextLabel")
-            descLabel.Name = "Description"
-            descLabel.Size = UDim2.new(1, -10, 0, IS_MOBILE and 40 or 30)
-            descLabel.Position = UDim2.new(0, 10, 0, IS_MOBILE and 50 or 35)
-            descLabel.BackgroundTransparency = 1
-            descLabel.Text = scriptData.Description
-            descLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
-            descLabel.Font = Enum.Font.Gotham
-            descLabel.TextSize = IS_MOBILE and 16 or 14
-            descLabel.TextXAlignment = Enum.TextXAlignment.Left
-            descLabel.Parent = scriptFrame
+			local descLabel = Instance.new("TextLabel")
+			descLabel.Name = "Description"
+			descLabel.Size = UDim2.new(1, -10, 0, 30)
+			descLabel.Position = UDim2.new(0, 10, 0, 35)
+			descLabel.BackgroundTransparency = 1
+			descLabel.Text = scriptData.Description
+			descLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+			descLabel.Font = Enum.Font.Gotham
+			descLabel.TextSize = 14
+			descLabel.TextXAlignment = Enum.TextXAlignment.Left
+			descLabel.Parent = scriptFrame
 
-            local executeButton = Instance.new("TextButton")
-            executeButton.Name = "ExecuteButton"
-            executeButton.Size = UDim2.new(0, IS_MOBILE and 150 or 120, 0, IS_MOBILE and 40 or 30)
-            executeButton.Position = UDim2.new(1, IS_MOBILE and -160 or -130, 1, IS_MOBILE and -45 or -35)
-            executeButton.BackgroundColor3 = Color3.fromRGB(80, 120, 80)
-            executeButton.BorderSizePixel = 0
-            executeButton.Text = "EXECUTE SCRIPT"
-            executeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-            executeButton.Font = Enum.Font.Gotham
-            executeButton.TextSize = IS_MOBILE and 16 or 14
-            executeButton.Parent = scriptFrame
+			local executeButton = Instance.new("TextButton")
+			executeButton.Name = "ExecuteButton"
+			executeButton.Size = UDim2.new(0, 120, 0, 30)
+			executeButton.Position = UDim2.new(1, -130, 1, -35)
+			executeButton.BackgroundColor3 = Color3.fromRGB(80, 120, 80)
+			executeButton.BorderSizePixel = 0
+			executeButton.Text = "EXECUTE SCRIPT"
+			executeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+			executeButton.Font = Enum.Font.Gotham
+			executeButton.TextSize = 14
+			executeButton.Parent = scriptFrame
 
-            -- Add corner rounding to execute button
-            local buttonCorner = Instance.new("UICorner")
-            buttonCorner.CornerRadius = UDim.new(0, 6)
-            buttonCorner.Parent = executeButton
+			-- Add corner rounding to execute button
+			local buttonCorner = Instance.new("UICorner")
+			buttonCorner.CornerRadius = UDim.new(0, 6)
+			buttonCorner.Parent = executeButton
 
-            -- Button animations
-            executeButton.MouseEnter:Connect(function()
-                TweenService:Create(executeButton, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(100, 140, 100)}):Play()
-            end)
+			-- Button animations
+			executeButton.MouseEnter:Connect(function()
+				TweenService:Create(executeButton, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(100, 140, 100)}):Play()
+			end)
 
-            executeButton.MouseLeave:Connect(function()
-                TweenService:Create(executeButton, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(80, 120, 80)}):Play()
-            end)
+			executeButton.MouseLeave:Connect(function()
+				TweenService:Create(executeButton, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(80, 120, 80)}):Play()
+			end)
 
-            executeButton.MouseButton1Down:Connect(function()
-                TweenService:Create(executeButton, TweenInfo.new(0.1), {Size = UDim2.new(0, IS_MOBILE and 145 or 115, 0, IS_MOBILE and 38 or 28)}):Play()
-            end)
+			executeButton.MouseButton1Down:Connect(function()
+				TweenService:Create(executeButton, TweenInfo.new(0.1), {Size = UDim2.new(0, 115, 0, 28)}):Play()
+			end)
 
-            executeButton.MouseButton1Up:Connect(function()
-                TweenService:Create(executeButton, TweenInfo.new(0.1), {Size = UDim2.new(0, IS_MOBILE and 150 or 120, 0, IS_MOBILE and 40 or 30)}):Play()
-            end)
+			executeButton.MouseButton1Up:Connect(function()
+				TweenService:Create(executeButton, TweenInfo.new(0.1), {Size = UDim2.new(0, 120, 0, 30)}):Play()
+			end)
 
-            executeButton.MouseButton1Click:Connect(function()
-                executeButton.Text = "EXECUTING..."
-                local success, err = pcall(function()
-                    loadstring(scriptData.Loadstring)()
-                end)
+			executeButton.MouseButton1Click:Connect(function()
+				executeButton.Text = "EXECUTING..."
+				local success, err = pcall(function()
+					loadstring(scriptData.Loadstring)()
+				end)
 
-                if success then
-                    executeButton.Text = "EXECUTED!"
-                    task.wait(1)
-                    executeButton.Text = "EXECUTE SCRIPT"
-                else
-                    executeButton.Text = "ERROR!"
-                    warn("Script execution failed: " .. err)
-                    task.wait(1)
-                    executeButton.Text = "EXECUTE SCRIPT"
-                end
-            end)
+				if success then
+					executeButton.Text = "EXECUTED!"
+					task.wait(1)
+					executeButton.Text = "EXECUTE SCRIPT"
+				else
+					executeButton.Text = "ERROR!"
+					warn("Script execution failed: " .. err)
+					task.wait(1)
+					executeButton.Text = "EXECUTE SCRIPT"
+				end
+			end)
 
-            -- Animate frame in
-            TweenService:Create(scriptFrame, TweenInfo.new(0.3, Enum.EasingStyle.Back), {
-                Size = UDim2.new(1, 0, 0, IS_MOBILE and 120 or 100)
-            }):Play()
-        end
-    end
+			-- Animate frame in
+			TweenService:Create(scriptFrame, TweenInfo.new(0.3, Enum.EasingStyle.Back), {Size = UDim2.new(1, 0, 0, 100)}):Play()
+		end
+	end
 
-    -- Update canvas size
-    ScriptsFrame.CanvasSize = UDim2.new(0, 0, 0, count * (IS_MOBILE and 130 or 110))
+	-- Update canvas size
+	ScriptsFrame.CanvasSize = UDim2.new(0, 0, 0, count * 110)
 end
 
 -- Connect category buttons
 for _, button in ipairs(CategoryButtons:GetChildren()) do
-    if button:IsA("TextButton") then
-        button.MouseButton1Click:Connect(function()
-            DisplayScripts(button.Name)
-        end)
-    end
+	if button:IsA("TextButton") then
+		button.MouseButton1Click:Connect(function()
+			DisplayScripts(button.Name)
+		end)
+	end
 end
 
--- Handle screen resize
-local function HandleResize()
-    MainFrame.Size = GetResponsiveDimensions()
-    CenterFrame(MainFrame)
-end
-
--- Connect resize event
-RunService.Heartbeat:Connect(function()
-    if VIEWPORT_SIZE ~= workspace.CurrentCamera.ViewportSize then
-        VIEWPORT_SIZE = workspace.CurrentCamera.ViewportSize
-        SCREEN_WIDTH = VIEWPORT_SIZE.X
-        SCREEN_HEIGHT = VIEWPORT_SIZE.Y
-        HandleResize()
-    end
-end)
-
--- Initial animation
 MainFrame.Size = UDim2.new(0, 0, 0, 0)
 CenterFrame(MainFrame) -- Ensure it starts centered even at size 0
-TweenService:Create(MainFrame, TweenInfo.new(0.5, Enum.EasingStyle.Back), {Size = GetResponsiveDimensions()}):Play()
+TweenService:Create(MainFrame, TweenInfo.new(0.5, Enum.EasingStyle.Back), {Size = UDim2.new(0, 500, 0, 600)}):Play()
 
 -- Show all scripts by default
 task.wait(0.5) -- Wait for open animation
