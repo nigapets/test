@@ -353,6 +353,12 @@ local OfficialScripts = {
 		Description = "Advanced Grow a Garden HUB"
 	},
 	{
+		Name = "Zysume Hub",
+		Category = "Games",
+		Loadstring = "loadstring(game:HttpGet('https://raw.githubusercontent.com/GRPGaming/Key-System/refs/heads/Xycer-Hub-Script/GAG4'))()",
+		Description = "Advanced Grow a Garden HUB with working sheckles dupe"
+	},
+	{
 		Name = "Unnamed ESP",
 		Category = "ESP",
 		Loadstring = "loadstring(game:HttpGet('https://raw.githubusercontent.com/ic3w0lf22/Unnamed-ESP/master/UnnamedESP.lua',true))()",
