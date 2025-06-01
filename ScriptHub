@@ -338,7 +338,7 @@ local OfficialScripts = {
 		Name = "GAG Duper ALL",
 		Category = "Games",
 		Loadstring = "loadstring(game:HttpGet('https://paste.ee/r/xCKXFAq3'))()",
-		Description = "DUPE EVERYTHING BUT HAS A LOADINGSCREEN"
+		Description = "DUPE EVERYTHING BUT HAS A LOADINGSCREEN AND VERY HIGH CHANCE OF NOT LOADING IN"
 	},
 	{
 		Name = "Adopt Me Duper",
