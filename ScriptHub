@@ -331,7 +331,7 @@ local OfficialScripts = {
 	{
 		Name = "GAG Duper",
 		Category = "Games",
-		Loadstring = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/nigapets/test/refs/heads/main/GUI%20UI", true))()',
+		Loadstring = "loadstring(game:HttpGet("https://raw.githubusercontent.com/nigapets/test/refs/heads/main/GUI%20UI", true))()",
 		Description = "Duper UI for Grow a Garden"
 	},
 	{
