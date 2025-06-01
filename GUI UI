@@ -84,7 +84,7 @@ WarningIcon.Parent = WarningBox
 local WarningText = Instance.new("TextLabel")
 WarningText.Size = UDim2.new(1, -50, 1, 0)
 WarningText.Position = UDim2.new(0, 50, 0, 0)
-WarningText.Text = "ONLY WORKS WITH:\n• Red Fox, Dragonfly, Raccoon\nOther pets will fail to duplicate!"
+WarningText.Text = "ONLY WORKS WITH:\n• Red Fox, Queen Bee, Dragonfly, Raccoon\nOther pets will fail to duplicate!"
 WarningText.TextColor3 = Color3.fromRGB(255, 120, 120)
 WarningText.Font = Enum.Font.GothamBold
 WarningText.TextSize = 14
@@ -141,6 +141,7 @@ Watermark.Parent = Frame
 local SUPPORTED_PETS = {
     "Red Fox",
     "Dragonfly",
+    "Queen Bee",
     "Raccoon"
 }
 
