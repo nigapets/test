@@ -332,13 +332,13 @@ local OfficialScripts = {
 		Name = "GAG Duper",
 		Category = "Games",
 		Loadstring = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/nigapets/test/refs/heads/main/GUI%20UI", true))()',
-		Description = "Duper UI for Grow a Garden"
+		Description = "Duper UI for Grow a Garden FAST"
 	},
 	{
 		Name = "GAG Duper ALL",
 		Category = "Games",
-		Loadstring = 'loadstring(game:HttpGet('https://paste.ee/r/xCKXFAq3'))()',
-		Description = "Duper UI for Grow a Garden BUT WORKS ON ALL (Longer loading)"
+		Loadstring = "loadstring(game:HttpGet('https://paste.ee/r/xCKXFAq3'))()",
+		Description = "DUPE EVERYTHING BUT HAS A LOADINGSCREEN"
 	},
 	{
 		Name = "Adopt Me Duper",
