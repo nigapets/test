@@ -335,6 +335,12 @@ local OfficialScripts = {
 		Description = "Duper UI for Grow a Garden"
 	},
 	{
+		Name = "GAG Duper ALL",
+		Category = "Games",
+		Loadstring = 'loadstring(game:HttpGet('https://paste.ee/r/xCKXFAq3'))()',
+		Description = "Duper UI for Grow a Garden BUT WORKS ON ALL (Longer loading)"
+	},
+	{
 		Name = "Adopt Me Duper",
 		Category = "Games",
 		Loadstring = "loadstring(game:HttpGet('https://paste.ee/r/xCKXFAq3'))()",
