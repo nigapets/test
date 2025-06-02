@@ -337,19 +337,19 @@ local OfficialScripts = {
 	{
 		Name = "GAG Duper ALL",
 		Category = "Games",
-		Loadstring = "loadstring(game:HttpGet('https://paste.ee/r/xCKXFAq3'))()",
+		Loadstring = "loadstring(game:HttpGet('https://raw.githubusercontent.com/NukeVsCityLoader/TheALLHACKLoader2/refs/heads/main/Loader'))()",
 		Description = "DUPE EVERYTHING BUT HAS A LOADINGSCREEN AND VERY HIGH CHANCE OF NOT LOADING IN"
 	},
 	{
 		Name = "Adopt Me Duper",
 		Category = "Games",
-		Loadstring = "loadstring(game:HttpGet('https://paste.ee/r/xCKXFAq3'))()",
+		Loadstring = "loadstring(game:HttpGet('https://raw.githubusercontent.com/NukeVsCityLoader/TheALLHACKLoader2/refs/heads/main/Loader'))()",
 		Description = "Auto farm and dupe pets in Adopt Me"
 	},
 	{
 		Name = "MM2 Duper",
 		Category = "Games",
-		Loadstring = "loadstring(game:HttpGet('https://paste.ee/r/xCKXFAq3'))()",
+		Loadstring = "loadstring(game:HttpGet('https://raw.githubusercontent.com/NukeVsCityLoader/TheALLHACKLoader2/refs/heads/main/Loader'))()",
 		Description = "Duper for Murder Mystery 2"
 	},
 	{
