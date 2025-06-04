@@ -359,6 +359,36 @@ local OfficialScripts = {
 		Description = "Advanced Grow a Garden HUB"
 	},
 	{
+		Name = "Troll Hub",
+		Category = "Games",
+		Loadstring = "loadstring(game:HttpGet('https://raw.githubusercontent.com/H20CalibreYT/SystemBroken/main/script'))()",
+		Description = "Troll Hub for trolling r15 only"
+	},
+	{
+		Name = "Ro Ghoul",
+		Category = "Games",
+		Loadstring = "loadstring(game:HttpGet('https://raw.githubusercontent.com/PorryDepTrai/exploit/main/DashBoostSolora.lua'))()",
+		Description = "Script for Ro ghoul"
+	},
+	{
+		Name = "Arsenal",
+		Category = "Games",
+		Loadstring = "loadstring(game:HttpGet('https://raw.githubusercontent.com/Insertl/QuotasHub/main/BETAv1.3'))()",
+		Description = "Script for Arsenal"
+	},
+	{
+		Name = "Untitled Boxing",
+		Category = "Games",
+		Loadstring = "loadstring(game:HttpGet('https://raw.githubusercontent.com/pid4k/scripts/main/BeanzHub.lua'))()",
+		Description = "Script for untitled Boxing"
+	},
+	{
+		Name = "Dead Rails",
+		Category = "Games",
+		Loadstring = "loadstring(game:HttpGet('https://raw.githubusercontent.com/gumanba/Scripts/main/DeadRails'))()",
+		Description = "Script for Dead Rails"
+	},
+	{
 		Name = "Zysume Hub",
 		Category = "Games",
 		Loadstring = "loadstring(game:HttpGet('https://raw.githubusercontent.com/GRPGaming/Key-System/refs/heads/Xycer-Hub-Script/GAG4'))()",
