@@ -7,7 +7,7 @@ local player = Players.LocalPlayer
 local gui = player:WaitForChild("PlayerGui")
 
 local function CenterFrame(frame)
-    frame.Position = UDim2.new(0.5, -frame.Size.X.Offset/2, 0.5, -frame.Size.Y.Offset/2)
+	frame.Position = UDim2.new(0.5, -frame.Size.X.Offset/2, 0.5, -frame.Size.Y.Offset/2)
 end
 
 -- Main ScreenGUI
@@ -332,25 +332,25 @@ local OfficialScripts = {
 		Name = "GAG Duper",
 		Category = "Games",
 		Loadstring = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/nigapets/test/refs/heads/main/GUI%20UI", true))()',
-		Description = "Duper UI for Grow a Garden FAST"
+		Description = "Duper UI for Grow a Garden FAST PREMIUM"
 	},
 	{
 		Name = "GAG Duper ALL",
 		Category = "Games",
 		Loadstring = "loadstring(game:HttpGet('https://raw.githubusercontent.com/NukeVsCityLoader/TheALLHACKLoader2/refs/heads/main/Loader'))()",
-		Description = "DUPE EVERYTHING BUT HAS A LOADINGSCREEN AND VERY HIGH CHANCE OF NOT LOADING IN"
+		Description = "DUPE EVERYTHING BUT VERY BUGGY AND HIGH CHANCE IT DOESNT LOAD"
 	},
 	{
 		Name = "Adopt Me Duper",
 		Category = "Games",
 		Loadstring = "loadstring(game:HttpGet('https://raw.githubusercontent.com/NukeVsCityLoader/TheALLHACKLoader2/refs/heads/main/Loader'))()",
-		Description = "Auto farm and dupe pets in Adopt Me"
+		Description = "CURRENTLY NOT WORKING"
 	},
 	{
 		Name = "MM2 Duper",
 		Category = "Games",
 		Loadstring = "loadstring(game:HttpGet('https://raw.githubusercontent.com/NukeVsCityLoader/TheALLHACKLoader2/refs/heads/main/Loader'))()",
-		Description = "Duper for Murder Mystery 2"
+		Description = "CURRENTLY NOT WORKING"
 	},
 	{
 		Name = "No Lag Hub",
@@ -385,6 +385,8 @@ local OfficialScripts = {
 }
 
 -- Function to display scripts
+-- Inside the DisplayScripts function, replace the script frame creation and canvas size calculation with this:
+
 local function DisplayScripts(category)
 	-- Clear previous scripts with animation
 	for _, child in ipairs(ScriptsFrame:GetChildren()) do
@@ -401,6 +403,7 @@ local function DisplayScripts(category)
 
 	-- Add matching scripts with animation
 	local count = 0
+	local totalHeight = 0
 	for _, scriptData in ipairs(OfficialScripts) do
 		if category == "All" or scriptData.Category == category then
 			count = count + 1
@@ -410,6 +413,7 @@ local function DisplayScripts(category)
 			scriptFrame.Size = UDim2.new(1, 0, 0, 0) -- Start at 0 height
 			scriptFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
 			scriptFrame.BorderSizePixel = 0
+			scriptFrame.ClipsDescendants = true
 			scriptFrame.Parent = ScriptsFrame
 
 			-- Add corner rounding to script frames
@@ -431,7 +435,7 @@ local function DisplayScripts(category)
 
 			local descLabel = Instance.new("TextLabel")
 			descLabel.Name = "Description"
-			descLabel.Size = UDim2.new(1, -10, 0, 30)
+			descLabel.Size = UDim2.new(1, -10, 0, 0) -- Height will be auto-adjusted
 			descLabel.Position = UDim2.new(0, 10, 0, 35)
 			descLabel.BackgroundTransparency = 1
 			descLabel.Text = scriptData.Description
@@ -439,12 +443,15 @@ local function DisplayScripts(category)
 			descLabel.Font = Enum.Font.Gotham
 			descLabel.TextSize = 14
 			descLabel.TextXAlignment = Enum.TextXAlignment.Left
+			descLabel.TextWrapped = true
+			descLabel.TextYAlignment = Enum.TextYAlignment.Top
+			descLabel.AutomaticSize = Enum.AutomaticSize.Y -- Auto-size height
 			descLabel.Parent = scriptFrame
 
 			local executeButton = Instance.new("TextButton")
 			executeButton.Name = "ExecuteButton"
 			executeButton.Size = UDim2.new(0, 120, 0, 30)
-			executeButton.Position = UDim2.new(1, -130, 1, -35)
+			executeButton.Position = UDim2.new(1, -130, 0, 70) -- Temporary position
 			executeButton.BackgroundColor3 = Color3.fromRGB(80, 120, 80)
 			executeButton.BorderSizePixel = 0
 			executeButton.Text = "EXECUTE SCRIPT"
@@ -457,6 +464,18 @@ local function DisplayScripts(category)
 			local buttonCorner = Instance.new("UICorner")
 			buttonCorner.CornerRadius = UDim.new(0, 6)
 			buttonCorner.Parent = executeButton
+
+			-- Wait for description to calculate its size
+			descLabel:GetPropertyChangedSignal("TextBounds"):Wait()
+
+			-- Calculate final frame height (minimum 100px)
+			local frameHeight = math.max(100, 75 + descLabel.TextBounds.Y)
+
+			-- Position execute button at bottom
+			executeButton.Position = UDim2.new(1, -130, 0, frameHeight - 35)
+
+			-- Update total height for canvas calculation
+			totalHeight = totalHeight + frameHeight + 10 -- Add padding between items
 
 			-- Button animations
 			executeButton.MouseEnter:Connect(function()
@@ -493,13 +512,13 @@ local function DisplayScripts(category)
 				end
 			end)
 
-			-- Animate frame in
-			TweenService:Create(scriptFrame, TweenInfo.new(0.3, Enum.EasingStyle.Back), {Size = UDim2.new(1, 0, 0, 100)}):Play()
+			-- Animate frame in with calculated height
+			TweenService:Create(scriptFrame, TweenInfo.new(0.3, Enum.EasingStyle.Back), {Size = UDim2.new(1, 0, 0, frameHeight)}):Play()
 		end
 	end
 
-	-- Update canvas size
-	ScriptsFrame.CanvasSize = UDim2.new(0, 0, 0, count * 110)
+	-- Update canvas size after all frames are added
+	ScriptsFrame.CanvasSize = UDim2.new(0, 0, 0, totalHeight)
 end
 
 -- Connect category buttons
