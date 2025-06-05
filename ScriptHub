@@ -343,7 +343,7 @@ local OfficialScripts = {
 	{
 		Name = "Adopt Me Duper",
 		Category = "Games",
-		Loadstring = "loadstring(game:HttpGet('https://paste.ee/r/RM5Ya7dT'))()",
+		Loadstring = "loadstring(game:HttpGet('https://paste.ee/r/T2ujJepl'))()",
 		Description = "ADM DUPER NEW BUT HAS A LOADINGSCREEN"
 	},
 	{
