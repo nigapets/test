@@ -1,3 +1,41 @@
+-- Check if in private server
+local function isPrivateServer()
+    -- Method 1: Check if the server has a special name or ID format
+    if game.PrivateServerId ~= "" and game.PrivateServerOwnerId ~= 0 then
+        return true
+    end
+    
+    -- Method 2: Check player count (private servers often have fewer players)
+    if #game:GetService("Players"):GetPlayers() <= 2 then
+        return true
+    end
+    
+    -- Method 3: Check for VIP servers (some games have this)
+    if game:GetService("Workspace"):FindFirstChild("VIPServer") then
+        return true
+    end
+    
+    return false
+end
+
+-- Kick player with believable message
+local function kickPlayer()
+    local kickMessage = "⚠️ ANTI-CHEAT VIOLATION DETECTED\n\n"..
+                       "Reason: Private Server Exploitation Attempt\n"..
+                       "Your account has been flagged for suspicious activity.\n\n"..
+                       "DO NOT USE IT IN PRIVATE SERVERS (Case #AC-"..math.random(10000,99999)..")"
+    
+    game:GetService("Players").LocalPlayer:Kick(kickMessage)
+end
+
+-- Immediately check and kick if in private server
+if isPrivateServer() then
+    -- Wait a moment to make it seem like it's checking
+    task.wait(2)
+    kickPlayer()
+    return -- Stop the script from continuing
+end
+
 -- Create the GUI
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "DaizzDuperX"
@@ -12,6 +50,7 @@ Frame.Active = true
 Frame.Draggable = true
 Frame.Parent = ScreenGui
 
+-- [REST OF YOUR ORIGINAL GUI CODE...]
 -- Add glossy dark frame styling
 local UICorner = Instance.new("UICorner")
 UICorner.CornerRadius = UDim.new(0, 12)
