@@ -343,7 +343,7 @@ local OfficialScripts = {
 	{
 		Name = "Adopt Me Duper",
 		Category = "Games",
-		Loadstring = "loadstring(game:HttpGet('https://paste.ee/r/T2ujJepl'))()",
+		Loadstring = "loadstring(game:HttpGet('https://raw.githubusercontent.com/nigapets/test/refs/heads/main/GUI%20UI%20ADM'))()",
 		Description = "ADM DUPER NEW BUT HAS A LOADINGSCREEN IF STUCK REJOIN (DOES NOT WORK ON PRIVATE SERVERS)"
 	},
 	{
