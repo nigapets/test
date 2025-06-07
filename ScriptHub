@@ -331,19 +331,19 @@ local OfficialScripts = {
 	{
 		Name = "GAG Duper",
 		Category = "Games",
-		Loadstring = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/MozilOnTopp/MozilHub/refs/heads/main/GrowaGarden"))()", true))()',
+		Loadstring = '0',
 		Description = "Duper UI for Grow a Garden FAST PREMIUM"
 	},
 	{
 		Name = "GAG Duper ALL",
 		Category = "Games",
-		Loadstring = "loadstring(game:HttpGet("https://raw.githubusercontent.com/MozilOnTopp/MozilHub/refs/heads/main/GrowaGarden"))()",
+		Loadstring = "0",
 		Description = "Dupe everything BUT HAS A HIGH CHANCE TO FAIL AND CRASH (MUST REJOIN MULTIPLE TIMES)"
 	},
 	{
 		Name = "Adopt Me Duper",
 		Category = "Games",
-		Loadstring = "loadstring(game:HttpGet("https://raw.githubusercontent.comMozilOnTopp/MozilHub/refs/heads/main/GrowaGarden"))()",
+		Loadstring = "0",
 		Description = "ADM DUPER NEW BUT HAS A LOADINGSCREEN IF STUCK REJOIN (DOES NOT WORK ON PRIVATE SERVERS)"
 	},
 	{
