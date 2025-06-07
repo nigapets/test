@@ -338,7 +338,7 @@ local OfficialScripts = {
 		Name = "GAG Duper ALL",
 		Category = "Games",
 		Loadstring = "loadstring(game:HttpGet('https://raw.githubusercontent.com/NukeVsCityLoader/TheALLHACKLoader2/refs/heads/main/Loader'))()",
-		Description = "DUPE EVERYTHING BUT VERY BUGGY AND HAS HIGH CHANCE IT DOESNT LOAD ALSO NEED TO REJOIN MULTIPLE TIMES IF IT DOESNT LOAD AFTER 5 MINUTES"
+		Description = "Dupe everything BUT HAS A HIGH CHANCE TO FAIL AND CRASH (MUST REJOIN MULTIPLE TIMES)"
 	},
 	{
 		Name = "Adopt Me Duper",
